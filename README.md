@@ -1,18 +1,7 @@
 # finalproject1
 
 
-#
-# board.py (Final project)
-#
-# A Board class for the Eight Puzzle
-#
-# name: 
-# email:
-#
-# If you worked with a partner, put his or her contact info below:
-# partner's name:
-# partner's email:
-#
+
 
 class Board:
     """ A class for objects that represent an Eight Puzzle board.
