@@ -3,6 +3,11 @@
 
 
 
+
+
+
+
+
 class Board:
     """ A class for objects that represent an Eight Puzzle board.
     """
