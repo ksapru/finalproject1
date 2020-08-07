@@ -6,6 +6,10 @@
 class Board:
     """ A class for objects that represent an Eight Puzzle board.
     """
+    
+    
+    
+    
     def __init__(self, digitstr):
         """ a constructor for a Board object whose configuration
             is specified by the input digitstr
