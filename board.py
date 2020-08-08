@@ -3,7 +3,7 @@
 #
 # A Board class for the Eight Puzzle
 #
-# name: 
+# name: Conor Ross
 # email:
 #
 # If you worked with a partner, put his or her contact info below:
