@@ -3,12 +3,12 @@
 #
 # A Board class for the Eight Puzzle
 #
-# name:
-# email:
+# name: Krish Sapru
+# email: ksapru@bu.edu
 #
 # If you worked with a partner, put his or her contact info below:
-# partner's name:
-# partner's email:
+# partner's name: Conor Ross
+# partner's email: cbross@bu.edu
 #
 
 
@@ -48,7 +48,7 @@ class Board:
 
     
     def __repr__(self):
-        """[summary]
+        """returns a string representation of a Board object.
         """
         s = ''
         for r in range(len(self.tiles)):
@@ -63,9 +63,11 @@ class Board:
     
     
     def move_blank(self, direction):
-        """[summary]
-        :param direction: [description]
-        :type direction: [type]
+        """takes as input a string direction that specifies 
+            the direction in which the blank should move, and that 
+            attempts to modify the contents of the called Board object accordingly.
+        :param direction: specifies the direction in which the blank should move 
+        :type direction: str
         """
         choices = 'up, down, left, right'
         if direction not in choices:
@@ -118,7 +120,8 @@ class Board:
         
                         
     def digit_string(self):
-        """[summary]
+        """ returns a string of digits that corresponds to the 
+            current contents of the called Board object’s tiles attribute.
         """
         s = ''
         for r in range(len(self.tiles)):
@@ -128,7 +131,7 @@ class Board:
         return s 
     
     def copy(self):
-        """[summary]
+        """ copies the digit string into a new self object
         """
         digits = self.digit_string()
         new_board = Board(digits)
@@ -136,7 +139,8 @@ class Board:
         
     
     def num_misplaced(self):
-        """[summary]
+        """returns a newly-constructed Board object 
+            that is a deep copy of the called object
         """
         
         count = 0 
@@ -156,9 +160,10 @@ class Board:
         
                 
     def __eq__(self, other):
-        """[summary]
-        :param other: [description]
-        :type other: [type]
+        """ return True if the called object (self) and the argument (other) 
+            have the same values for the tiles attribute, and False otherwise.
+        :param other: the other object to which self is being compared to the self object 
+        :type other: arguement
         """
         
         if (self.tiles == other.tiles):
