@@ -52,15 +52,29 @@ class State:
         
 
     def generate_successors(self):
+        """[summary]
+
+        :return: [description]
+        :rtype: [type]
+        """
         successors = []
         for m in MOVES:
             b = self.board.copy()
             if b.move_blank(m):
-                moved = State(b, self, m)
+                moved = State(b, self, m)#construct a new State object for the result of the move
                 moved.num_moves = self.num_moves + 1 
                 successors += [moved]
         return successors
 
+
+    def print_moves_to(self):
+        if self.predecessor == None:    # base case
+            print('initial state:')
+            print(self.board)
+        else:
+            self.predecessor.print_moves_to()
+            print('move the blank',self.move + ':')
+            print(self.board)
 
 
     def __repr__(self):
