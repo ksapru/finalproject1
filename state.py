@@ -29,7 +29,7 @@ class State:
     ### Add your method definitions here. ###
     
     def __init__(self, board, predecessor, move):
-        """[summary]
+        """constructs a new State object by initializing the following four attributes
         """
         
         self.board = board 
@@ -42,7 +42,7 @@ class State:
         
         
     def is_goal(self):
-        """[summary]
+        """ returns True if the called State object is a goal state, and False otherwise.
         """
         
         if (self.board.tiles == GOAL_TILES):
@@ -52,10 +52,10 @@ class State:
         
 
     def generate_successors(self):
-        """[summary]
+        """ returns a list of State objects for all successor states of the called State object.
 
-        :return: [description]
-        :rtype: [type]
+        :return: returns a list of State objects of all successor states
+        :rtype: lst 
         """
         successors = []
         for m in MOVES:
@@ -65,16 +65,6 @@ class State:
                 moved.num_moves = self.num_moves + 1 
                 successors += [moved]
         return successors
-
-
-    def print_moves_to(self):
-        if self.predecessor == None:    # base case
-            print('initial state:')
-            print(self.board)
-        else:
-            self.predecessor.print_moves_to()
-            print('move the blank',self.move + ':')
-            print(self.board)
 
 
     def __repr__(self):
