@@ -37,30 +37,29 @@ class State:
         self.move = move 
         self.num_moves = 0 
         
+        if self.predecessor != None:
+            self.num_moves = self.predecessor.num_moves + 1
         
         
     def is_goal(self):
         """[summary]
         """
-        goal = '012345678'
         
         if (self.board.tiles == GOAL_TILES):
             return True 
         return False 
         
         
+
     def generate_successors(self):
         successors = []
         for m in MOVES:
             b = self.board.copy()
             if b.move_blank(m):
-                moved = State(b, self, m)#construct a new State object for the result of the move
+                moved = State(b, self, m)
                 moved.num_moves = self.num_moves + 1 
                 successors += [moved]
         return successors
-
-
-
 
 
 
@@ -74,6 +73,7 @@ class State:
         s += str(self.num_moves)
         return s
     
+
     def creates_cycle(self):
         """ returns True if this State object (the one referred to
             by self) would create a cycle in the current sequence of moves,
@@ -86,6 +86,7 @@ class State:
                return True
             state = state.predecessor
         return False
+
 
     def __gt__(self, other):
         """ implements a > operator for State objects
