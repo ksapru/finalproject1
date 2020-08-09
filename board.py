@@ -64,7 +64,6 @@ class Board:
     
     def move_blank(self, direction):
         """[summary]
-
         :param direction: [description]
         :type direction: [type]
         """
@@ -82,35 +81,37 @@ class Board:
                 new_blank = self.tiles[row + 1][col]
                 self.tiles[row + 1][col] = blank
                 self.tiles[row][col] = new_blank 
-                self.blank_r = [row + 1]
+                self.blank_r = row + 1
                 return True 
-        return False 
+            return False 
     
         if direction == 'up':
-            if row - 1 <= len(self.tiles):
+            if row - 1 <= len(self.tiles) + 1:
                 blank = self.tiles[row][col]
-                new_blank = self.titles[row - 1][col]
+                new_blank = self.tiles[row - 1][col]
                 self.tiles[row][col] = new_blank
                 self.tiles[row - 1][col] = blank
+                self.blank_r = row - 1
                 return True 
             return False 
         
         if direction == 'right':
-            if col + 1 <= len(self.tiles[0] - 1):
+            if col + 1 <= len(self.tiles[0]) - 1:
                 blank = self.tiles[row][col]
                 new_blank = self.tiles[row][col + 1]
                 self.tiles[row][col + 1] = blank
                 self.tiles[row][col] = new_blank
-                self.blank_c = [col + 1]
+                self.blank_c = col + 1
                 return True 
             return False 
                 
         if direction == 'left':
-            if col - 1 <= len(self.tiles[0]):
+            if col - 1 <= len(self.tiles[0]) + 1:
                 blank = self.tiles[row][col]
                 new_blank = self.tiles[row][col - 1]
                 self.tiles[row][col - 1] = blank
                 self.tiles[row][col] = new_blank
+                self.blank_c = col - 1
                 return True
             return False 
             
@@ -129,35 +130,38 @@ class Board:
     def copy(self):
         """[summary]
         """
-        
-        self.tiles = Board(self.digit_string())
-        return self.tiles
+        digits = self.digit_string()
+        new_board = Board(digits)
+        return new_board
         
     
     def num_misplaced(self):
         """[summary]
         """
-        goal = '012345678'
+        
         count = 0 
+        num = 0
+        if self.blank_c == 0 and self.blank_r == 0:
+            count = 1
         existing_board = self.digit_string()
-        for idx in self.digit_string():
-            if idx is not '':
+        for idx in existing_board:
+            if int(idx) != num:
                 count += 1
             else:
                 count += 0
-            return count  
+            num += 1
+
+        return count - 1
         
         
                 
     def __eq__(self, other):
         """[summary]
-
         :param other: [description]
         :type other: [type]
         """
         
-        if (self.titles == other.titles):
+        if (self.tiles == other.tiles):
             return True 
         return False 
-    
- c
+ 
