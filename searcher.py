@@ -3,12 +3,12 @@
 #
 # classes for objects that perform state-space search on Eight Puzzles  
 #
-# name: 
-# email:
+# name: Krish Sapru 
+# email: ksapru@bu.edu
 #
 # If you worked with a partner, put his or her contact info below:
-# partner's name:
-# partner's email:
+# partner's name: Conor Ross 
+# partner's email: cbross@bu.edu
 #
 
 import random
@@ -57,7 +57,9 @@ class Searcher:
         :rtype: [type]
         """
     
-        if (self.depth_limit != -1) and (state.num_moves > self.depth_limit) and (state.creates_cycle() == True):
+        if (self.depth_limit != -1) and (state.num_moves > self.depth_limit):
+            return False
+        elif (state.creates_cycle() == True):
             return False
         return True
     
@@ -82,9 +84,9 @@ class Searcher:
         :rtype: [type]
         """
         
-        for idx in new_states:
-            if self.should_add(idx) == True:
-                self.add_state(idx)         
+        for idx in range(len(new_states)):
+            if self.should_add(new_states[idx]) == True:
+                self.add_state(new_states[idx])      
     
     def next_state(self):
         """ chooses the next state to be tested from the list of 
@@ -102,43 +104,149 @@ class Searcher:
         :type init_state: [type]
         :return: [description]
         :rtype: [type]
-        """
+        """       
         
-        self.state += [init_state]
+        self.states += [init_state]
         
         while len(self.states) != 0:
-            test = self.next_state()
-            
-            if test.is_goal() == True:
-                self.num_tested += 1 
-                return test
+            s = self.next_state()
+            if s.is_goal() == True:
+                self.num_tested += 1
+                return s
             else:
-                test_succ = self.generate_succesors(test)
-                self.add_state = self.generate_successors(test)
-                self.add
+                self.add_states(s.generate_successors())
+                self.num_tested += 1
         return None
+            
         
     
 
-### Add your BFSeacher and DFSearcher class definitions below. ###
+    ### Add your BFSeacher and DFSearcher class definitions below. ###
 
+class BFSearcher(Searcher):
+    """[summary]
 
+    :param searcher: [description]
+    :type searcher: [type]
+    """
+
+    def next_state(self):
+        """[summary]
+        """
+        
+        fifo = self.states[0]
+        for idx in range(len(self.states)):
+            if self.states[idx].num_moves < fifo.num_moves:
+                fifo = self.states[idx]
+        self.states.remove(fifo)
+        return fifo
+        
+        
 
 def h0(state):
     """ a heuristic function that always returns 0 """
     return 0
 
-### Add your other heuristic functions here. ###
+    ### Add your other heuristic functions here. ###
 
+        
+def h1(state):
+    """[summary]
 
+    :param state: [description]
+    :type state: [type]
+    :return: [description]
+    :rtype: [type]
+    """
+    return state.board.num_misplaced()  
+    
+    
+ 
+    
+    
+class DFSearcher(Searcher):
+    """[summary]
 
+    :param Searcher: [description]
+    :type Searcher: [type]
+    :return: [description]
+    :rtype: [type]
+    """
+    
+    def next_state(self):
+        """[summary]
+
+        :return: [description]
+        :rtype: [type]
+        """
+
+        difo = self.states[-1]
+        for idx in range(len(self.states)):
+           if self.states[idx].num_moves < difo.num_moves:
+                difo = self.states[-1]
+        self.states.remove(difo)
+        return difo
+    
+    
+    
+    
 class GreedySearcher(Searcher):
     """ A class for objects that perform an informed greedy state-space
         search on an Eight Puzzle.
     """
     ### Add your GreedySearcher method definitions here. ###
 
+    def __init__(self, depth_limit, heuristic):
+        """[summary]
 
+        :param init_state: [description]
+        :type init_state: [type]
+        :param heuristic: [description]
+        :type heuristic: [type]
+        :param depth_limit: [description]
+        :type depth_limit: [type]
+        """
+        
+        super().__init__(depth_limit)
+        self.heuristic = heuristic
+        self.states = []
+        self.num_tested = 0
+        
+        
+        
+        
+    def priority(self, state):
+        """[summary]
+
+        :param state: [description]
+        :type state: [type]
+        """
+        if self.heuristic == -1:
+            heuristic = state.board.num_misplaced()
+        elif self.heuristic == 1:
+            heuristic = state.board.distance()
+        return -1 * self.heuristic(state)
+    
+    def add_state(self, state):
+        """[summary]
+
+        :param state: [description]
+        :type state: [type]
+        """
+        
+        self.states += [[self.priority(state), state]]
+        
+        
+    def next_state(self):
+        """[summary]
+        """
+        
+        self.states.remove(max(self.states))
+        return max(self.states)[1]
+        
+        
+
+        
     def __repr__(self):
         """ returns a string representation of the GreedySearcher object
             referred to by self.
@@ -153,3 +261,53 @@ class GreedySearcher(Searcher):
 
 ### Add your AStarSeacher class definition below. ###
 
+
+class AStarSearcher(Searcher):
+    """[summary]
+
+    :param Searcher: [description]
+    :type Searcher: [type]
+    """
+    
+    def __init__(self, depth_limit, heuristic):
+        """[summary]
+        """
+    
+        super().__init__(depth_limit)
+        self.heuristic = heuristic
+        self.states = []
+        self.num_tested = 0
+        
+        
+    def add_state(self, state):
+        """[summary]
+
+        :param state: [description]
+        :type state: [type]
+        """
+        
+        self.states += [[self.priority(state), state]]
+        
+        
+    def next_state(self):
+        """[summary]
+        """
+        
+        self.states.remove(max(self.states))
+        return max(self.states)[1]
+        
+        
+    def priority(self, state):
+        """[summary]
+
+        :param state: [description]
+        :type state: [type]
+        """
+        if self.heuristic == -1:
+            heuristic == state.board.num_misplaced()
+        elif self.heuristic == 1:
+            heuristic = state.board.distance()
+        moves = state.num_moves            
+        priority = -1 * (heuristic + num_moves)
+        return priority
+    
