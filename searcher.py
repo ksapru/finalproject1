@@ -117,10 +117,8 @@ class Searcher:
                 self.add_states(s.generate_successors())
                 self.num_tested += 1
         return None
-            
         
     
-
     ### Add your BFSeacher and DFSearcher class definitions below. ###
 
 class BFSearcher(Searcher):
@@ -221,6 +219,7 @@ class GreedySearcher(Searcher):
         :param state: [description]
         :type state: [type]
         """
+        
         if self.heuristic == -1:
             heuristic = state.board.num_misplaced()
         elif self.heuristic == 1:
@@ -242,11 +241,9 @@ class GreedySearcher(Searcher):
         """
         
         self.states.remove(max(self.states))
-        return max(self.states)[1]
+        return (self.states)[1]
         
-        
-
-        
+    
     def __repr__(self):
         """ returns a string representation of the GreedySearcher object
             referred to by self.
@@ -292,9 +289,9 @@ class AStarSearcher(Searcher):
     def next_state(self):
         """[summary]
         """
-        
-        self.states.remove(max(self.states))
-        return max(self.states)[1]
+        state_new = max(self.states)
+        self.states.remove(state_new)
+        return (state_new[1])
         
         
     def priority(self, state):
@@ -303,11 +300,10 @@ class AStarSearcher(Searcher):
         :param state: [description]
         :type state: [type]
         """
-        if self.heuristic == -1:
-            heuristic == state.board.num_misplaced()
-        elif self.heuristic == 1:
-            heuristic = state.board.distance()
-        moves = state.num_moves            
-        priority = -1 * (heuristic + num_moves)
+        heuristic = self.heuristic(state)          
+        priority = -1 * (heuristic + state.num_moves)
         return priority
     
+    
+    
+       
