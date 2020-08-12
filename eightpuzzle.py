@@ -123,5 +123,6 @@ def process_file(filename, algorithm, depth_limit=-1, heuristic=None):
     if count == 0:
         print('\nsolved 0 puzzles')
     else:
-        
+        print('\nsolved', str(count), 'puzzles')
+        print('\naverages:', str(tot1/count), 'moves,', str(tot2/count), 'states tested')
       
