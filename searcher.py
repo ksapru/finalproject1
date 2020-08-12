@@ -106,12 +106,13 @@ class Searcher:
         :rtype: [type]
         """       
         
-        self.states += [init_state]
+        self.add_state(init_state)
         
         while len(self.states) != 0:
             s = self.next_state()
             if s.is_goal() == True:
                 self.num_tested += 1
+                p = self.next_state()
                 return s
             else:
                 self.add_states(s.generate_successors())
@@ -159,7 +160,28 @@ def h1(state):
     return state.board.num_misplaced()  
     
     
- 
+ def h2(state):
+    """[summary]
+
+    :param state: [description]
+    :type state: [type]
+    :return: [description]
+    :rtype: [type]
+    """
+    count = []
+    num = 0
+    #if self.blank_c == 0 and self.blank_r == 0:
+    #    count = 1
+    existing_board = state.board.digit_string()
+    for idx in existing_board:
+        if int(idx) != num:
+            count += [int(idx)]
+        num += 1
+    
+    sum_count = sum(count)
+    return sum_count // 4
+
+
     
     
 class DFSearcher(Searcher):
