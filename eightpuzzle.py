@@ -84,45 +84,50 @@ def eight_puzzle(init_boardstr, algorithm, extra=-1):
 def process_file(filename, algorithm, depth_limit=-1, heuristic=None):
     """ doctring goes here
     """
-    
+    count = 0
+    tot1 = 0
+    tot2 = 0
     file = open(filename, 'r')
     for line in file:
         line = line[:-1]
         board = Board(line)
         init_state = State(board, None, 'init')
+        searcher = None
+    
         if algorithm == 'random':
-            searcher = Searcher(init_state, extra)
+            searcher = Searcher(depth_limit)
         elif algorithm == 'BFS':
-           searcher = BFSearcher(init_state, extra)
+            searcher = BFSearcher(depth_limit)
         elif algorithm == 'DFS':
-           searcher = DFSearcher(init_state, extra)
+            searcher = DFSearcher(depth_limit)
         elif algorithm == 'Greedy':
-           searcher = GreedySearcher(init_state, extra, -1)
+            searcher = GreedySearcher(depth_limit, heuristic)
         elif algorithm == 'A*':
-           searcher = AStarSearcher(init_state, extra, -1)
+            searcher = AStarSearcher(depth_limit, heuristic)
         else:  
             print('unknown algorithm:', algorithm)
-        sol = None
+
+        soln = None
         try:
-            soln = searcher.find_solution(s)
+            soln = searcher.find_solution(init_state)
         except KeyboardInterrupt:
             idx = line + ': ' + 'search terminated, no solution'
             print(idx)
-            count -= 5
+            count -= 1
             total -= searcher.num_tested
-            total2 -= sol.num_moves 
-        if sol == None:
+            total2 -= soln.num_moves 
+        if soln == None:
             idx = line + ': ' + 'no solution'
             print(idx)
-        elif sol != None:
+        elif soln != None:
             count += 1
             tot1 += searcher.num_tested
-            tot2 += sol.num_moves
-            idx = line + ': ' + str(sol.num_moves)+ ' moves, ' + str(searcher.num_tested) + ' states tested'
+            tot2 += soln.num_moves
+            idx = line + ': ' + str(soln.num_moves)+ ' moves, ' + str(searcher.num_tested) + ' states tested'
             print(idx)
     if count == 0:
         print('\nsolved 0 puzzles')
     else:
         print('\nsolved', str(count), 'puzzles')
-        print('\naverages:', str(tot1/count), 'moves,', str(tot2/count), 'states tested')
+        print('\naverages:', str(tot2/count), 'moves,', str(tot1/count), 'states tested')
       
